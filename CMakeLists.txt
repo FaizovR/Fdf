@@ -13,7 +13,7 @@ link_directories(push_swap
         libft)
 
 add_executable(fdf
-       )
+       sources/fdf.c)
 
 
 target_link_libraries(fdf
