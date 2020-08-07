@@ -20,7 +20,8 @@ HEADERS_DIRECTORY = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./sources/
-SOURCES_LIST =
+SOURCES_LIST =	read_file.c\
+				draw.c\
 
 SOURCES_LIST_FDF = fdf.c
 

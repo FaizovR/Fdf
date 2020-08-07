@@ -9,11 +9,11 @@ include_directories(
         libft/
 )
 
-link_directories(push_swap
+link_directories(fdf
         libft)
 
 add_executable(fdf
-       sources/fdf.c sources/read_file.c)
+       sources/fdf.c sources/read_file.c sources/draw.c)
 
 
 target_link_libraries(fdf

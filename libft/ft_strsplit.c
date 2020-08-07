@@ -6,7 +6,7 @@
 /*   By: ycameron <ycameron@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 20:53:40 by ycameron          #+#    #+#             */
-/*   Updated: 2020/08/07 13:54:48 by hbarrett         ###   ########.fr       */
+/*   Updated: 2020/08/07 13:56:51 by hbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char				**ft_strsplit(char const *s, char c)
 
 	if (!s)
 		return (NULL);
-	if (!(result = (char**)ft_memalloc(sizeof(char*) * (word_cnt(s, c) + 1))))
+	if (!(result = (char**)ft_memalloc(sizeof(char*) * (ft_word_cnt(s, c) + 1))))
 		return (NULL);
 	index = 0;
 	ptr = result;
