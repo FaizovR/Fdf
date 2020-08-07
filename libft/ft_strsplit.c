@@ -6,13 +6,13 @@
 /*   By: ycameron <ycameron@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 20:53:40 by ycameron          #+#    #+#             */
-/*   Updated: 2019/09/30 12:11:23 by ycameron         ###   ########.fr       */
+/*   Updated: 2020/08/07 13:54:48 by hbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static unsigned int	word_cnt(char const *str, char sym)
+unsigned int	ft_word_cnt(char const *str, char sym)
 {
 	unsigned int	result;
 

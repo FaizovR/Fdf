@@ -6,7 +6,7 @@
 /*   By: ycameron <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 23:07:52 by ycameron          #+#    #+#             */
-/*   Updated: 2019/09/17 12:26:17 by ycameron         ###   ########.fr       */
+/*   Updated: 2020/08/07 13:54:48 by hbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,5 @@ char				*ft_ltoa_base(unsigned long long value,
 		int base, int uppercase);
 char				*ft_ltoa(long long nbr);
 char				*ft_ultoa(unsigned long long nbr);
+unsigned int		ft_word_cnt(char const *str, char sym);
 #endif
