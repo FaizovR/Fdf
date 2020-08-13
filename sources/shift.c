@@ -6,44 +6,44 @@
 /*   By: hbarrett <hbarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:24:50 by hbarrett          #+#    #+#             */
-/*   Updated: 2020/08/13 13:54:02 by hbarrett         ###   ########.fr       */
+/*   Updated: 2020/08/13 14:16:36 by hbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_point	init_point(int x, int y)
+static void	shift_up_x(t_fdf *data)
 {
-	t_point	p;
-
-	p.x = x;
-	p.y = y;
-	return (p);
+	if (data->shift_x < INT_MAX - SHIFT)
+		data->shift_x += SHIFT;
 }
 
-void			draw(t_fdf *data)
+static void	shift_down_x(t_fdf *data)
 {
-	t_point p1;
-	t_point p2;
+	if (data->shift_x > INT_MIN + SHIFT)
+		data->shift_x -= SHIFT;
+}
 
-	p1.y = 0;
-	while (p1.y < data->height)
-	{
-		p1.x = 0;
-		while (p1.x < data->width)
-		{
-			if (p1.x < data->width - 1)
-			{
-				p2 = init_point(p1.x + 1, p1.y);
-				draw_line(p1, p2, data);
-			}
-			if (p1.y < data->height - 1)
-			{
-				p2 = init_point(p1.x, p1.y + 1);
-				draw_line(p1, p2, data);
-			}
-			p1.x++;
-		}
-		p1.y++;
-	}
+static void	shift_up_y(t_fdf *data)
+{
+	if (data->shift_y < INT_MAX - SHIFT)
+		data->shift_y += SHIFT;
+}
+
+static void	shift_down_y(t_fdf *data)
+{
+	if (data->shift_y > INT_MIN + SHIFT)
+		data->shift_y -= SHIFT;
+}
+
+void		shift(int key, t_fdf *data)
+{
+	if (key == 126)
+		shift_down_y(data);
+	if (key == 125)
+		shift_up_y(data);
+	if (key == 123)
+		shift_down_x(data);
+	if (key == 124)
+		shift_up_x(data);
 }

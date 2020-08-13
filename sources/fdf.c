@@ -1,35 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbarrett <hbarrett@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/11 13:24:50 by hbarrett          #+#    #+#             */
+/*   Updated: 2020/08/13 12:43:46 by hbarrett         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
-#include <stdio.h>
 
-int deal_key(int key, t_fdf *data) {
-	printf("%d", key);
-
-	if (key == 126)
-		data->shift_y -= 10;
-	if (key == 125)
-		data->shift_y += 10;
-	if (key == 123)
-		data->shift_x -= 10;
-	if (key == 124)
-		data->shift_x += 10;
-	mlx_clear_window(data->mlx_ptr, data->win_ptr);
-	draw(data);
-	return (0);
+void	init_data(t_fdf *data)
+{
+	data->z_matrix = NULL;
+	data->mlx_ptr = NULL;
+	data->win_ptr = NULL;
+	data->is_fullscreen = 0;
+	data->zoom = ZOOM;
+	data->shift_z = SHIFT_Z;
+	data->shift_x = SHIFT;
+	data->shift_y = SHIFT;
+	data->win_x = WINDOW_SIZE_S_X;
+	data->win_y = WINDOW_SIZE_S_Y;
 }
-int main(int argc, char **argv) {
-	t_fdf *data;
-	if (argc == 1) {
-		return 0;
-	}
-	data = (t_fdf*)malloc(sizeof(t_fdf));
-	read_file(argv[1], data);
-	data->zoom = 20;
-	data->mlx_ptr = mlx_init();
-	data->win_ptr = mlx_new_window(data->mlx_ptr, 1000, 1000, "FDF");
 
-	draw(data);
-//	draw_line(10, 10, 600, 300, data);
-	mlx_key_hook(data->win_ptr, deal_key, data);
-	mlx_loop(data->mlx_ptr);
+int		main(int argc, char **argv)
+{
+	t_fdf	data;
+
+	if (argc == 1)
+	{
+		ft_putstr("Usage: ./fdf [map]");
+		return (0);
+	}
+	init_data(&data);
+	read_file(argv[1], &data);
+	new_window(&data);
 	return (0);
 }

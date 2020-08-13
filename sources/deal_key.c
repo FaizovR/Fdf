@@ -6,44 +6,46 @@
 /*   By: hbarrett <hbarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:24:50 by hbarrett          #+#    #+#             */
-/*   Updated: 2020/08/13 13:54:02 by hbarrett         ###   ########.fr       */
+/*   Updated: 2020/08/13 12:45:40 by hbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_point	init_point(int x, int y)
+int		is_key(int key)
 {
-	t_point	p;
-
-	p.x = x;
-	p.y = y;
-	return (p);
+	if (key == 126 || key == 125 || key == 123 || key == 124 \
+	|| key == 69 || key == 78 || key == 53 || key == 121 \
+	|| key == 116 || key == 3 || key == 34)
+	{
+		return (1);
+	}
+	return (0);
 }
 
-void			draw(t_fdf *data)
+void	do_key(int key, t_fdf *data)
 {
-	t_point p1;
-	t_point p2;
+	if (key == 123 || key == 124 || key == 125 || key == 126)
+		shift(key, data);
+	if (key == 116 || key == 121)
+		shift_z(key, data);
+	if (key == 69 || key == 78)
+		zoom(key, data);
+	if (key == 3)
+		change_window(data);
+	if (key == 34)
+		data->is_isometric = data->is_isometric ? 0 : 1;
+	if (key == 53)
+		exit_success(data);
+}
 
-	p1.y = 0;
-	while (p1.y < data->height)
+int		deal_key(int key, t_fdf *data)
+{
+	if (is_key(key))
 	{
-		p1.x = 0;
-		while (p1.x < data->width)
-		{
-			if (p1.x < data->width - 1)
-			{
-				p2 = init_point(p1.x + 1, p1.y);
-				draw_line(p1, p2, data);
-			}
-			if (p1.y < data->height - 1)
-			{
-				p2 = init_point(p1.x, p1.y + 1);
-				draw_line(p1, p2, data);
-			}
-			p1.x++;
-		}
-		p1.y++;
+		mlx_clear_window(data->mlx_ptr, data->win_ptr);
+		do_key(key, data);
+		draw(data);
 	}
+	return (0);
 }

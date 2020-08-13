@@ -6,44 +6,30 @@
 /*   By: hbarrett <hbarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:24:50 by hbarrett          #+#    #+#             */
-/*   Updated: 2020/08/13 13:54:02 by hbarrett         ###   ########.fr       */
+/*   Updated: 2020/08/13 12:47:10 by hbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_point	init_point(int x, int y)
+static void	zoom_up(t_fdf *data)
 {
-	t_point	p;
-
-	p.x = x;
-	p.y = y;
-	return (p);
+	if (data->zoom < INT_MAX - ZOOM)
+		data->zoom += ZOOM;
 }
 
-void			draw(t_fdf *data)
+static void	zoom_down(t_fdf *data)
 {
-	t_point p1;
-	t_point p2;
+	if (data->zoom > 5)
+		data->zoom -= ZOOM;
+	else
+		data->zoom = 5;
+}
 
-	p1.y = 0;
-	while (p1.y < data->height)
-	{
-		p1.x = 0;
-		while (p1.x < data->width)
-		{
-			if (p1.x < data->width - 1)
-			{
-				p2 = init_point(p1.x + 1, p1.y);
-				draw_line(p1, p2, data);
-			}
-			if (p1.y < data->height - 1)
-			{
-				p2 = init_point(p1.x, p1.y + 1);
-				draw_line(p1, p2, data);
-			}
-			p1.x++;
-		}
-		p1.y++;
-	}
+void		zoom(int key, t_fdf *data)
+{
+	if (key == 69)
+		zoom_up(data);
+	if (key == 78)
+		zoom_down(data);
 }

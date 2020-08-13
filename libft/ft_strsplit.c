@@ -6,7 +6,7 @@
 /*   By: ycameron <ycameron@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 20:53:40 by ycameron          #+#    #+#             */
-/*   Updated: 2020/08/07 13:56:51 by hbarrett         ###   ########.fr       */
+/*   Updated: 2020/08/13 10:26:12 by hbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ unsigned int	ft_word_cnt(char const *str, char sym)
 	unsigned int	result;
 
 	result = 0;
-	while (*str)
+	while (*str && *str != '\n')
 	{
 		if (*str != sym)
 		{

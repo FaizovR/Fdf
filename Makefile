@@ -22,6 +22,16 @@ HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 SOURCES_DIRECTORY = ./sources/
 SOURCES_LIST =	read_file.c\
 				draw.c\
+				deal_key.c\
+				error_handler.c\
+				shift.c\
+				shift_z.c\
+				zoom.c\
+				window.c\
+				math.c\
+				isometric.c\
+				read_functions.c\
+				draw_line.c\
 
 SOURCES_LIST_FDF = fdf.c
 

@@ -1,49 +1,60 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbarrett <hbarrett@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/11 13:24:50 by hbarrett          #+#    #+#             */
+/*   Updated: 2020/08/13 12:41:53 by hbarrett         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-
-int get_height(char *file_name);
-
-
-int get_width(char *file_name);
-
-void fill_matrix(int *z_line, char *line);
-
-void read_file(char *file_name, t_fdf *data)
+void	check_file(char *file_name, t_fdf *data)
 {
-	int fd;
-	char *line;
-	int i;
+	int		fd;
+	char	*line;
 
-	data->height = get_height(file_name);
-	data->width = get_width(file_name);
-
-//	TODO add Malloc error handler
-	data->z_matrix = (int**)malloc(sizeof(int*) * (data->height + 1));
-	i = 0;
-//	TODO add Malloc error handler
-	while (i <= data->height)
-		data->z_matrix[i++] = (int*)malloc(sizeof(int) * (data->width + 1));
-	fd = open(file_name, O_RDONLY, 0);
-	i = 0;
-	while (get_next_line(fd, &line))
-	{
-		fill_matrix(data->z_matrix[i], line);
-		free(line);
-		i++;
-	}
+	if ((fd = open(file_name, O_RDONLY, 0)) <= 0)
+		ft_error(data, "file does not exist\n");
+	if (get_next_line(fd, &line) == -1)
+		ft_error(data, "Invalid file\n");
+	free(line);
 	close(fd);
-//	TODO check this
-	data->z_matrix[i] = NULL;
 }
 
-void fill_matrix(int *z_line, char *line) {
+int		ft_is_str_digit(char *str)
+{
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
+void	fill_matrix(int *z_line, char *line, t_fdf *data)
+{
 	char	**nums;
 	int		i;
-//	TODO add Malloc error handler
-	nums = ft_strsplit(line, ' ');
+	int		j;
+
+	if (!(nums = ft_strsplit(line, ' ')))
+	{
+		ft_putstr("Reading error\n");
+		free(line);
+		free(z_line);
+		exit(0);
+	}
 	i = 0;
+	j = 0;
 	while (nums[i])
 	{
+		if (!ft_is_str_digit(nums[i]))
+			ft_error(data, "Incorrect map\n");
 		z_line[i] = ft_atoi(nums[i]);
 		free(nums[i]);
 		i++;
@@ -51,33 +62,31 @@ void fill_matrix(int *z_line, char *line) {
 	free(nums);
 }
 
-int get_width(char *file_name) {
-	int width;
-	int fd;
-	char *line;
-
-	fd = open(file_name, O_RDONLY, 0);
-	get_next_line(fd, &line);
-	width = ft_word_cnt(line, ' ');
-	free(line);
-	close(fd);
-
-	return (width);
-}
-
-int get_height(char *file_name) {
-	char	*line;
+void	read_file(char *file_name, t_fdf *data)
+{
 	int		fd;
-	int 	height;
+	char	*line;
+	int		i;
 
+	check_file(file_name, data);
+	data->height = get_height_fd(file_name);
+	data->width = get_width_fd(file_name, data);
+	if (!(data->z_matrix = (int**)malloc(sizeof(int*) * (data->height + 1))))
+		ft_error(data, "Reading error\n");
+	i = 0;
+	while (i < data->height)
+		if (!(data->z_matrix[i++] =
+				(int*)ft_memalloc(sizeof(int) * (data->width + 1))))
+			ft_error(data, "Reading error\n");
 	fd = open(file_name, O_RDONLY, 0);
-	height = 0;
+	i = 0;
 	while (get_next_line(fd, &line))
 	{
-		height++;
+		fill_matrix(data->z_matrix[i], line, data);
+		ft_bzero(line, sizeof(line));
 		free(line);
+		i++;
 	}
 	close(fd);
-
-	return (height);
+	data->z_matrix[i] = NULL;
 }

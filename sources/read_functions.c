@@ -6,44 +6,50 @@
 /*   By: hbarrett <hbarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 13:24:50 by hbarrett          #+#    #+#             */
-/*   Updated: 2020/08/13 13:54:02 by hbarrett         ###   ########.fr       */
+/*   Updated: 2020/08/13 12:38:28 by hbarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static t_point	init_point(int x, int y)
+static int	get_width(char *line)
 {
-	t_point	p;
-
-	p.x = x;
-	p.y = y;
-	return (p);
+	return (ft_word_cnt(line, ' '));
 }
 
-void			draw(t_fdf *data)
+int			get_width_fd(char *file_name, t_fdf *data)
 {
-	t_point p1;
-	t_point p2;
+	int		width;
+	int		fd;
+	char	*line;
 
-	p1.y = 0;
-	while (p1.y < data->height)
+	fd = open(file_name, O_RDONLY, 0);
+	get_next_line(fd, &line);
+	width = get_width(line);
+	free(line);
+	while (get_next_line(fd, &line))
 	{
-		p1.x = 0;
-		while (p1.x < data->width)
-		{
-			if (p1.x < data->width - 1)
-			{
-				p2 = init_point(p1.x + 1, p1.y);
-				draw_line(p1, p2, data);
-			}
-			if (p1.y < data->height - 1)
-			{
-				p2 = init_point(p1.x, p1.y + 1);
-				draw_line(p1, p2, data);
-			}
-			p1.x++;
-		}
-		p1.y++;
+		if (get_width(line) != width)
+			ft_error(data, "Incorrect map\n");
+		free(line);
 	}
+	close(fd);
+	return (width);
+}
+
+int			get_height_fd(char *file_name)
+{
+	char	*line;
+	int		fd;
+	int		height;
+
+	fd = open(file_name, O_RDONLY, 0);
+	height = 0;
+	while (get_next_line(fd, &line))
+	{
+		height++;
+		free(line);
+	}
+	close(fd);
+	return (height);
 }
